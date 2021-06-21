@@ -5,10 +5,19 @@ export savejob
 
 const _JOBS = OrderedDict{String,Any}()
 
-function savejob(f, name)
+# TODO: this method is deprecated
+function savejob(f, name::AbstractString)
     haskey(_JOBS, name) && @warn "Overwriting existing job: $(name)"
     _JOBS[name] = f(name)
     return name
+end
+
+function savejob(job::NamedTuple)
+    @assert haskey(job, :name)
+    @assert haskey(job, :f)
+    haskey(_JOBS, job.name) && @warn "Overwriting existing job: $(name)"
+    _JOBS[job.name] = job.f
+    return job.name
 end
 
 function main(args)

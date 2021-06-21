@@ -39,4 +39,10 @@ using Test, IOCapture
     c = IOCapture.capture() do; ComputationManager.main(["--runall"]); end
     @test occursin("Running job: job1", c.output)
     @test occursin("Running job: job2", c.output)
+
+    # Test the savejob(::NamedTuple) signature
+    empty!(ComputationManager._JOBS) # reset global state
+    savejob( (name = "job3", f = () -> @info "Running job: job3") )
+    c = IOCapture.capture() do; ComputationManager.main(["--runall"]); end
+    @test occursin("Running job: job3", c.output)
 end
