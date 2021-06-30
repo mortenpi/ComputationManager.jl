@@ -15,7 +15,7 @@ end
 function savejob(job::NamedTuple)
     @assert haskey(job, :name)
     @assert haskey(job, :f)
-    haskey(_JOBS, job.name) && @warn "Overwriting existing job: $(name)"
+    haskey(_JOBS, job.name) && @warn "Overwriting existing job: $(job.name)"
     _JOBS[job.name] = job.f
     return job.name
 end
